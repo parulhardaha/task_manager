@@ -1,6 +1,7 @@
 from main import app, db
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash
 from models import User
+from forms import SignupForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -12,25 +13,22 @@ def home():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == "POST":
-        name = request.form["name"]
-        email = request.form["email"]
-        password = request.form["password"]
-        role = request.form["role"]
+    form = SignupForm()
 
-        user = User.query.filter_by(email=email).first()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
 
         if user:
             flash("Email already exists")
             return redirect(url_for("signup"))
 
-        hashed_password = generate_password_hash(password)
+        hashed_password = generate_password_hash(form.password.data)
 
         new_user = User(
-            name=name,
-            email=email,
+            name=form.name.data,
+            email=form.email.data,
             password=hashed_password,
-            role=role
+            role=form.role.data
         )
 
         db.session.add(new_user)
@@ -39,24 +37,23 @@ def signup():
         flash("Account created successfully")
         return redirect(url_for("login"))
 
-    return render_template("signup.html")
+    return render_template("signup.html", form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+    form = LoginForm()
 
-        user = User.query.filter_by(email=email).first()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
 
-        if user and check_password_hash(user.password, password):
+        if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for("dashboard"))
 
         flash("Invalid email or password")
 
-    return render_template("login.html")
+    return render_template("login.html", form=form)
 
 
 @app.route("/dashboard")
