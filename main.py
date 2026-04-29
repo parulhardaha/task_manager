@@ -17,6 +17,8 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+from models import *
 login_manager.login_view = "login"
 
 if __name__ == "__main__":
