@@ -1,9 +1,18 @@
-from main import app, db
 from flask import render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
+from extensions import db
 from models import User
 from forms import SignupForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user, login_required, current_user
+
+
+# Import app and login_manager after other imports to avoid circular import
+from main import app, login_manager
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 @app.route("/")
@@ -16,25 +25,20 @@ def signup():
     form = SignupForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-
-        if user:
+        if User.query.filter_by(email=form.email.data).first():
             flash("Email already exists")
             return redirect(url_for("signup"))
 
-        hashed_password = generate_password_hash(form.password.data)
-
-        new_user = User(
+        user = User(
             name=form.name.data,
             email=form.email.data,
-            password=hashed_password,
+            password=generate_password_hash(form.password.data),
             role=form.role.data
         )
 
-        db.session.add(new_user)
+        db.session.add(user)
         db.session.commit()
 
-        flash("Account created successfully")
         return redirect(url_for("login"))
 
     return render_template("signup.html", form=form)
@@ -51,7 +55,7 @@ def login():
             login_user(user)
             return redirect(url_for("dashboard"))
 
-        flash("Invalid email or password")
+        flash("Invalid credentials")
 
     return render_template("login.html", form=form)
 
@@ -59,12 +63,11 @@ def login():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return f"Welcome {current_user.name} | Role: {current_user.role}"
+    return render_template("dashboard.html", user=current_user)
 
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    flash("Logged out successfully")
     return redirect(url_for("login"))
