@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+</head>
+<body>
+    <h2>Signup</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        {{ form.name.label }}<br>
+        {{ form.name() }}<br><br>
+
+        {{ form.email.label }}<br>
+        {{ form.email() }}<br><br>
+
+        {{ form.password.label }}<br>
+        {{ form.password() }}<br><br>
+
+        {{ form.role.label }}<br>
+        {{ form.role() }}<br><br>
+
+        {{ form.submit() }}
+    </form>
+
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+</body>
+</html>
