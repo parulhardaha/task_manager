@@ -1,31 +1,163 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Task Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6d9 50%, #ff69b4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            max-width: 400px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            color: #ff1493;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #c2185b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #d81b60;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffb6d9;
+            border-radius: 10px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ff1493;
+            background: white;
+            box-shadow: 0 0 10px rgba(255, 20, 147, 0.2);
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .form-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
+        }
+
+        .alert {
+            background: #ffe0ec;
+            border-left: 4px solid #ff1493;
+            color: #d81b60;
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .link-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .link-text a {
+            color: #ff1493;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .link-text a:hover {
+            color: #ff69b4;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
+    <div class="container">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to your account</p>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-    <form method="POST">
-        {{ form.hidden_tag() }}
+        <form method="POST">
+            {{ form.hidden_tag() }}
 
-        {{ form.email.label }}<br>
-        {{ form.email() }}<br><br>
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email() }}
+            </div>
 
-        {{ form.password.label }}<br>
-        {{ form.password() }}<br><br>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password() }}
+            </div>
 
-        {{ form.submit() }}
-    </form>
+            <div class="form-group">
+                {{ form.submit(value='Login', class='btn-submit') }}
+            </div>
+        </form>
 
-    <p>Don't have an account? <a href="{{ url_for('signup') }}">Signup</a></p>
+        <p class="link-text">Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a></p>
+    </div>
 </body>
 </html>
