@@ -12,8 +12,14 @@ class User(UserMixin, db.Model):
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.now())
 
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
+    status = db.Column(db.String(20), default="todo")
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'))

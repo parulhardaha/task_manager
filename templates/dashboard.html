@@ -191,49 +191,52 @@
 </head>
 <body>
     <div class="navbar">
-        <h1>✨ Task Manager</h1>
-        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        <h1> Task Manager</h1>
+        <a href="{{ url_for('routes.logout') }}" class="logout-btn">Logout</a>
     </div>
 
     <div class="welcome-section">
-        <h2>👋 Welcome Back, {{ user.name }}!</h2>
+        <h2> Welcome Back, {{ user.name }}!</h2>
         <div class="user-info">
             <p><strong>Email:</strong> {{ user.email }}</p>
             <p><strong>Role:</strong> {{ user.role }}</p>
         </div>
     </div>
 
-    <h3 style="color: white; margin-bottom: 20px; font-size: 24px;">📊 Quick Stats</h3>
+    <h3 style="color: white; margin-bottom: 20px; font-size: 24px;"> Quick Stats</h3>
     <div class="stats-container">
         <div class="stat-card">
-            <div class="stat-icon">📋</div>
+            <div class="stat-icon"></div>
             <h3>Total Tasks</h3>
             <div class="stat-number">0</div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">⏳</div>
+            <div class="stat-icon"></div>
             <h3>Pending</h3>
             <div class="stat-number">0</div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">✅</div>
+            <div class="stat-icon"></div>
             <h3>Completed</h3>
             <div class="stat-number">0</div>
         </div>
 
         <div class="stat-card">
-            <div class="stat-icon">⚠️</div>
+            <div class="stat-icon"></div>
             <h3>Overdue</h3>
             <div class="stat-number">0</div>
         </div>
     </div>
 
     <div class="actions-section">
-        <h3>🎯 Quick Actions</h3>
+        <h3> Quick Actions</h3>
         <a href="#" class="action-button">➕ Create New Task</a>
-        <a href="#" class="action-button secondary">📁 View Projects</a>
+        <a href="{{ url_for('routes.projects') }}" class="action-button secondary">📁 View Projects</a>
+        {% if user.role == "Admin" %}
+            <a href="{{ url_for('routes.create_project') }}" class="action-button">✨ Create Project</a>
+        {% endif %}
         <a href="#" class="action-button secondary">👥 Team Members</a>
     </div>
 </body>

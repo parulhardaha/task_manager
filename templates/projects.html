@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Task Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6d9 50%, #ff69b4 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar h1 {
+            color: #ff1493;
+            font-size: 28px;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3);
+        }
+
+        .project-title {
+            color: #ff1493;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-description {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .project-meta {
+            font-size: 13px;
+            color: #c2185b;
+            border-top: 1px solid #ffb6d9;
+            padding-top: 10px;
+        }
+
+        .empty-state {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+        }
+
+        .empty-state h2 {
+            color: #ff1493;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        .create-btn {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            color: white;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .create-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 20, 147, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>All Projects</h1>
+        <a href="{{ url_for('routes.dashboard') }}" class="back-btn">← Dashboard</a>
+    </div>
+
+    <div class="container">
+        {% if projects %}
+            {% for project in projects %}
+                <div class="project-card">
+                    <div class="project-title">{{ project.title }}</div>
+                    <div class="project-description">
+                        {{ project.description if project.description else 'No description provided.' }}
+                    </div>
+                    <div class="project-meta">
+                        Created: {{ project.created_at.strftime('%d %b %Y') if project.created_at else 'Unknown' }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h2> No Projects Yet</h2>
+                <p>Create your first project to get started!</p>
+                <a href="{{ url_for('routes.create_project') }}" class="create-btn">✨ Create Project</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

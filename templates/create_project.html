@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - Task Manager</title>
+    <title>Create Project - Task Manager</title>
     <style>
         * {
             margin: 0;
@@ -18,6 +18,7 @@
             justify-content: center;
             align-items: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
         }
 
         .container {
@@ -25,7 +26,7 @@
             padding: 50px;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
-            max-width: 450px;
+            max-width: 600px;
             width: 100%;
             backdrop-filter: blur(10px);
         }
@@ -46,7 +47,7 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         label {
@@ -54,13 +55,11 @@
             color: #d81b60;
             font-weight: 600;
             margin-bottom: 8px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        select {
+        textarea {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #ffb6d9;
@@ -69,19 +68,23 @@
             background: rgba(255, 255, 255, 0.8);
             transition: all 0.3s ease;
             color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus,
-        select:focus {
+        textarea:focus {
             outline: none;
             border-color: #ff1493;
             background: white;
             box-shadow: 0 0 10px rgba(255, 20, 147, 0.2);
         }
 
-        .form-group button {
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        button {
             width: 100%;
             padding: 12px;
             background: linear-gradient(135deg, #ff1493, #ff69b4);
@@ -92,10 +95,9 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
         }
 
-        .form-group button:hover {
+        button:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
         }
@@ -110,29 +112,39 @@
             font-size: 14px;
         }
 
-        .link-text {
+        .back-link {
             text-align: center;
             margin-top: 20px;
-            color: #666;
-            font-size: 14px;
         }
 
-        .link-text a {
+        .back-link a {
             color: #ff1493;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
 
-        .link-text a:hover {
+        .back-link a:hover {
             color: #ff69b4;
             text-decoration: underline;
+        }
+
+        .info-box {
+            background: #fff5f7;
+            border-left: 4px solid #ffb6d9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Create Account</h2>
+        <h2Create New Project</h2>
+    
+
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -146,31 +158,23 @@
             {{ form.hidden_tag() }}
 
             <div class="form-group">
-                {{ form.name.label }}
-                {{ form.name() }}
+                {{ form.title.label }}
+                {{ form.title(placeholder="e.g., Website Redesign") }}
             </div>
 
             <div class="form-group">
-                {{ form.email.label }}
-                {{ form.email() }}
+                {{ form.description.label }}
+                {{ form.description(placeholder="Describe your project in detail...") }}
             </div>
 
             <div class="form-group">
-                {{ form.password.label }}
-                {{ form.password() }}
-            </div>
-
-            <div class="form-group">
-                {{ form.role.label }}
-                {{ form.role() }}
-            </div>
-
-            <div class="form-group">
-                {{ form.submit(value='Sign Up', class='btn-submit') }}
+                <button type="submit">Create Project</button>
             </div>
         </form>
 
-        <p class="link-text">Already have an account? <a href="{{ url_for('routes.login') }}">Login here</a></p>
+        <div class="back-link">
+            <a href="{{ url_for('routes.dashboard') }}">← Back to Dashboard</a>
+        </div>
     </div>
 </body>
 </html>
