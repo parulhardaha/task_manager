@@ -71,7 +71,8 @@ from models import Project
 @login_required
 def projects():
     projects = Project.query.all()
-    return render_template("projects.html", projects=projects)
+    users = User.query.all()
+    return render_template("projects.html", projects=projects, users=users)
 
 from forms import ProjectForm
 from models import Project
@@ -88,6 +89,7 @@ def create_project():
             description=form.description.data,
             created_by=current_user.id
         )
+        print("FORM SUBMITTED")
 
         db.session.add(project)
         db.session.commit()
@@ -95,3 +97,27 @@ def create_project():
         return redirect(url_for("routes.projects"))
 
     return render_template("create_project.html", form=form)
+
+@routes.route("/assign_member/<int:project_id>", methods=["POST"])
+@login_required
+def assign_member(project_id):
+    user_id = request.form.get("user_id")
+
+    if current_user.role != "Admin":
+        flash("Only admin can add members!")
+        return redirect(url_for("routes.projects"))
+
+    project = Project.query.get_or_404(project_id)
+    user = User.query.get_or_404(user_id)
+
+    if user not in project.members:
+        project.members.append(user)
+        db.session.commit()
+
+    return redirect(url_for("routes.projects"))
+
+@routes.route("/project/<int:project_id>/members")
+@login_required
+def project_members(project_id):
+    project = Project.query.get_or_404(project_id)
+    return render_template("project_members.html", project=project)

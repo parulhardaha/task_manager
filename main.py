@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash
 load_dotenv()
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "super-secret-key")
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///taskmanager.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -17,7 +17,7 @@ db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "routes.login"
 
 from flask_login import login_manager as _login_manager
 from models import User

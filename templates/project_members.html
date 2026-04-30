@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Project Members</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffc0cb, #ffb6d9, #ff69b4);
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+        }
+
+        h1 {
+            color: #ff1493;
+        }
+
+        .member {
+            padding: 10px;
+            margin: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ff1493;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>👥 Project Members</h1>
+
+    {% if project.members %}
+        {% for member in project.members %}
+            <div class="member">
+                {{ member.name }} ({{ member.email }})
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No members assigned yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('routes.projects') }}" class="back-btn">← Back</a>
+
+</div>
+
+</body>
+</html>

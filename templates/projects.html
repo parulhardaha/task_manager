@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects - Task Manager</title>
+
     <style>
         * {
             margin: 0;
@@ -91,6 +92,46 @@
             color: #c2185b;
             border-top: 1px solid #ffb6d9;
             padding-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* BUTTON ROW */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-members {
+            background: #ff69b4;
+            color: white;
+        }
+
+        .btn-members:hover {
+            background: #ff1493;
+            transform: translateY(-2px);
+        }
+
+        .btn-add {
+            background: white;
+            color: #ff1493;
+            border: 2px solid #ff1493;
+        }
+
+        .btn-add:hover {
+            background: #ff1493;
+            color: white;
+            transform: translateY(-2px);
         }
 
         .empty-state {
@@ -133,32 +174,85 @@
         }
     </style>
 </head>
+
 <body>
+
     <div class="navbar">
         <h1>All Projects</h1>
         <a href="{{ url_for('routes.dashboard') }}" class="back-btn">← Dashboard</a>
     </div>
 
     <div class="container">
+
         {% if projects %}
             {% for project in projects %}
                 <div class="project-card">
-                    <div class="project-title">{{ project.title }}</div>
+
+                    <div class="project-title">
+                        {{ project.title }}
+                    </div>
+
                     <div class="project-description">
                         {{ project.description if project.description else 'No description provided.' }}
                     </div>
+
                     <div class="project-meta">
                         Created: {{ project.created_at.strftime('%d %b %Y') if project.created_at else 'Unknown' }}
                     </div>
+
+                    
+                    <div class="btn-row">
+
+
+    <div class="btn-row">
+
+    <!-- View Members Button -->
+    <a href="{{ url_for('routes.project_members', project_id=project.id) }}"
+       class="btn btn-members">
+        👥 Team Members
+    </a>
+
+    <!-- Add Member FORM -->
+    <form action="{{ url_for('routes.assign_member', project_id=project.id) }}"
+          method="POST"
+          style="display:flex; gap:10px; align-items:center; margin:0;">
+
+        <select name="user_id" required style="
+            padding:8px 12px;
+            border-radius:10px;
+            border:1px solid #ff69b4;
+            background:white;
+            outline:none;
+        ">
+            <option value="" disabled selected>Select Member</option>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-add">
+            ➕ Add Member
+        </button>
+
+    </form>
+
+</div>
+
+</div>
+
                 </div>
             {% endfor %}
         {% else %}
             <div class="empty-state">
-                <h2> No Projects Yet</h2>
+                <h2>No Projects Yet</h2>
                 <p>Create your first project to get started!</p>
-                <a href="{{ url_for('routes.create_project') }}" class="create-btn">✨ Create Project</a>
+                <a href="{{ url_for('routes.create_project') }}" class="create-btn">
+                     Create Project
+                </a>
             </div>
         {% endif %}
+
     </div>
+
 </body>
 </html>

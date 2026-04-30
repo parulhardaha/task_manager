@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Project - Task Manager</title>
+
     <style>
         * {
             margin: 0;
@@ -34,16 +35,8 @@
         h2 {
             color: #ff1493;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-size: 32px;
-            letter-spacing: 0.5px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #c2185b;
-            margin-bottom: 30px;
-            font-size: 14px;
         }
 
         .form-group {
@@ -55,33 +48,18 @@
             color: #d81b60;
             font-weight: 600;
             margin-bottom: 8px;
-            font-size: 15px;
         }
 
-        input[type="text"],
-        textarea {
+        input[type="text"], textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px;
             border: 2px solid #ffb6d9;
             border-radius: 10px;
             font-size: 14px;
-            background: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #ff1493;
-            background: white;
-            box-shadow: 0 0 10px rgba(255, 20, 147, 0.2);
         }
 
         textarea {
-            resize: vertical;
-            min-height: 150px;
+            min-height: 120px;
         }
 
         button {
@@ -92,89 +70,61 @@
             border: none;
             border-radius: 10px;
             font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
         }
 
         .alert {
             background: #ffe0ec;
             border-left: 4px solid #ff1493;
-            color: #d81b60;
-            padding: 12px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 10px;
+            margin-bottom: 15px;
         }
 
         .back-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .back-link a {
             color: #ff1493;
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .back-link a:hover {
-            color: #ff69b4;
-            text-decoration: underline;
-        }
-
-        .info-box {
-            background: #fff5f7;
-            border-left: 4px solid #ffb6d9;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            color: #666;
-            font-size: 14px;
         }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <h2Create New Project</h2>
-    
+<div class="container">
 
+    <h2>Create New Project</h2>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-        <form method="POST">
-            {{ form.hidden_tag() }}
+    <form method="POST" action="{{ url_for('routes.create_project') }}">
+        {{ form.hidden_tag() }}
 
-            <div class="form-group">
-                {{ form.title.label }}
-                {{ form.title(placeholder="e.g., Website Redesign") }}
-            </div>
-
-            <div class="form-group">
-                {{ form.description.label }}
-                {{ form.description(placeholder="Describe your project in detail...") }}
-            </div>
-
-            <div class="form-group">
-                <button type="submit">Create Project</button>
-            </div>
-        </form>
-
-        <div class="back-link">
-            <a href="{{ url_for('routes.dashboard') }}">← Back to Dashboard</a>
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title() }}
         </div>
+
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description() }}
+        </div>
+
+        <button type="submit">Create Project</button>
+    </form>
+
+    <div class="back-link">
+        <a href="{{ url_for('routes.dashboard') }}">← Back to Dashboard</a>
     </div>
+
+</div>
 </body>
 </html>
